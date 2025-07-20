@@ -1,0 +1,83 @@
+// Core Types for Educational Testing Platform
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  class: string;
+  subjects: string[];
+  role: 'student' | 'admin';
+  createdAt: string;
+}
+
+export interface Question {
+  id: string;
+  subject: string;
+  class: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  type: 'objective' | 'subjective';
+  question: string;
+  options?: string[]; // For objective questions
+  correctAnswer: string;
+  explanation?: string;
+  points: number;
+  createdBy: 'ai' | 'manual';
+  createdAt: string;
+}
+
+export interface Test {
+  id: string;
+  title: string;
+  subject: string;
+  class: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  description: string;
+  questions: Question[];
+  timeLimit: number; // in minutes
+  totalPoints: number;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface TestAttempt {
+  id: string;
+  userId: string;
+  testId: string;
+  answers: Record<string, string>;
+  score: number;
+  totalPoints: number;
+  percentage: number;
+  category: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
+  timeSpent: number;
+  tabSwitchCount: number;
+  completedAt: string;
+  isCompleted: boolean;
+}
+
+export interface AuthState {
+  user: User | null;
+  isAuthenticated: boolean;
+  loading: boolean;
+  error: string | null;
+}
+
+export interface TestState {
+  tests: Test[];
+  currentTest: Test | null;
+  currentAttempt: TestAttempt | null;
+  loading: boolean;
+  error: string | null;
+}
+
+export interface ThemeState {
+  mode: 'light' | 'dark';
+}
+
+export interface QuestionGenerationRequest {
+  subject: string;
+  class: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  type: 'objective' | 'subjective' | 'mixed';
+  count: number;
+  topic?: string;
+}
