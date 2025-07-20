@@ -33,12 +33,14 @@ const generateToken = (userId) => {
 // @access  Public
 router.post('/register', async (req, res) => {
   try {
+    // console.log("Incoming request body:", req.body);
     // Validate input
     const { error, value } = registerSchema.validate(req.body);
     if (error) {
-      return res.status(400).json({ 
-        message: 'Validation error', 
-        details: error.details[0].message 
+      console.log("Validation error:", error.details[0].message);
+      return res.status(400).json({
+        message: 'Validation error',
+        details: error.details[0].message
       });
     }
 
@@ -47,7 +49,7 @@ router.post('/register', async (req, res) => {
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'User already exists with this email' });
+      return res.status(409).json({ message: 'User already exists with this email' });
     }
 
     // Create new user
@@ -72,7 +74,7 @@ router.post('/register', async (req, res) => {
     });
   } catch (error) {
     console.error('Registration error:', error);
-    res.status(500).json({ message: 'Server error during registration' });
+    res.status(500).json({ message: 'Server error during registration', error: error });
   }
 });
 
@@ -84,9 +86,9 @@ router.post('/login', async (req, res) => {
     // Validate input
     const { error, value } = loginSchema.validate(req.body);
     if (error) {
-      return res.status(400).json({ 
-        message: 'Validation error', 
-        details: error.details[0].message 
+      return res.status(400).json({
+        message: 'Validation error',
+        details: error.details[0].message
       });
     }
 
@@ -152,9 +154,9 @@ router.put('/profile', auth, async (req, res) => {
 
     const { error, value } = updateSchema.validate(req.body);
     if (error) {
-      return res.status(400).json({ 
-        message: 'Validation error', 
-        details: error.details[0].message 
+      return res.status(400).json({
+        message: 'Validation error',
+        details: error.details[0].message
       });
     }
 
@@ -190,9 +192,9 @@ router.post('/change-password', auth, async (req, res) => {
 
     const { error, value } = changePasswordSchema.validate(req.body);
     if (error) {
-      return res.status(400).json({ 
-        message: 'Validation error', 
-        details: error.details[0].message 
+      return res.status(400).json({
+        message: 'Validation error',
+        details: error.details[0].message
       });
     }
 

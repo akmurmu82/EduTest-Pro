@@ -141,6 +141,7 @@ export const mockAPI = {
   
   fetchTests: async () => {
     await new Promise(resolve => setTimeout(resolve, 500));
+    console.log("sampleTests:", sampleTests)
     return sampleTests;
   },
   

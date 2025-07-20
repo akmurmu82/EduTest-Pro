@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { User, Test, Question, TestAttempt, QuestionGenerationRequest } from '../types';
+import { User, Test, Question, TestAttempt, QuestionGenerationRequest, QuestionsResponse, AuthResponse, SingleTestResponse, TestsResponse, SingleQuestionResponse, GeneratedQuestionsResponse, SingleAttemptResponse, AttemptsResponse, StudentsResponse, SingleUserResponse, AdminAnalytics } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -21,18 +21,18 @@ api.interceptors.request.use((config) => {
 
 // Auth API
 export const authAPI = {
-  login: async (email: string, password: string): Promise<{ user: User; token: string }> => {
-    const response = await api.post('/auth/login', { email, password });
+  login: async (email: string, password: string): Promise<AuthResponse> => {
+    const response = await api.post<AuthResponse>('/auth/login', { email, password });
     return response.data;
   },
 
-  register: async (userData: Omit<User, 'id' | 'createdAt'>): Promise<{ user: User; token: string }> => {
-    const response = await api.post('/auth/register', userData);
+  register: async (userData: Omit<User, 'id' | 'createdAt'>): Promise<AuthResponse> => {
+    const response = await api.post<AuthResponse>('/auth/register', userData);
     return response.data;
   },
 
   getProfile: async (): Promise<User> => {
-    const response = await api.get('/auth/profile');
+    const response = await api.get<User>('/auth/profile');
     return response.data;
   },
 };
@@ -40,22 +40,22 @@ export const authAPI = {
 // Tests API
 export const testsAPI = {
   getTests: async (): Promise<Test[]> => {
-    const response = await api.get('/tests');
-    return response.data;
+    const response = await api.get<TestsResponse>('/tests');
+    return response.data.tests;
   },
 
   getTest: async (id: string): Promise<Test> => {
-    const response = await api.get(`/tests/${id}`);
+    const response = await api.get<SingleTestResponse>(`/tests/${id}`);
     return response.data;
   },
 
   createTest: async (testData: Omit<Test, 'id' | 'createdAt'>): Promise<Test> => {
-    const response = await api.post('/tests', testData);
+    const response = await api.post<SingleTestResponse>('/tests', testData);
     return response.data;
   },
 
   updateTest: async (id: string, testData: Partial<Test>): Promise<Test> => {
-    const response = await api.put(`/tests/${id}`, testData);
+    const response = await api.put<SingleTestResponse>(`/tests/${id}`, testData);
     return response.data;
   },
 
@@ -67,17 +67,22 @@ export const testsAPI = {
 // Questions API
 export const questionsAPI = {
   getQuestions: async (): Promise<Question[]> => {
-    const response = await api.get('/questions');
+    const response = await api.get<QuestionsResponse>('/questions');
+    return response.data.questions;
+  },
+
+  createQuestion: async (
+    questionData: Omit<Question, 'id' | 'createdAt'>
+  ): Promise<Question> => {
+    const response = await api.post<SingleQuestionResponse>('/questions', questionData);
     return response.data;
   },
 
-  createQuestion: async (questionData: Omit<Question, 'id' | 'createdAt'>): Promise<Question> => {
-    const response = await api.post('/questions', questionData);
-    return response.data;
-  },
-
-  updateQuestion: async (id: string, questionData: Partial<Question>): Promise<Question> => {
-    const response = await api.put(`/questions/${id}`, questionData);
+  updateQuestion: async (
+    id: string,
+    questionData: Partial<Question>
+  ): Promise<Question> => {
+    const response = await api.put<SingleQuestionResponse>(`/questions/${id}`, questionData);
     return response.data;
   },
 
@@ -85,26 +90,30 @@ export const questionsAPI = {
     await api.delete(`/questions/${id}`);
   },
 
-  generateQuestions: async (request: QuestionGenerationRequest): Promise<Question[]> => {
-    const response = await api.post('/questions/generate', request);
+  generateQuestions: async (
+    request: QuestionGenerationRequest
+  ): Promise<Question[]> => {
+    const response = await api.post<GeneratedQuestionsResponse>('/questions/generate', request);
     return response.data;
   },
 };
 
 // Test Attempts API
 export const attemptsAPI = {
-  submitAttempt: async (attemptData: Omit<TestAttempt, 'id' | 'completedAt'>): Promise<TestAttempt> => {
-    const response = await api.post('/attempts', attemptData);
+  submitAttempt: async (
+    attemptData: Omit<TestAttempt, 'id' | 'completedAt'>
+  ): Promise<TestAttempt> => {
+    const response = await api.post<SingleAttemptResponse>('/attempts', attemptData);
     return response.data;
   },
 
   getUserAttempts: async (userId: string): Promise<TestAttempt[]> => {
-    const response = await api.get(`/attempts/user/${userId}`);
+    const response = await api.get<AttemptsResponse>(`/attempts/user/${userId}`);
     return response.data;
   },
 
   getAllAttempts: async (): Promise<TestAttempt[]> => {
-    const response = await api.get('/attempts');
+    const response = await api.get<AttemptsResponse>('/attempts');
     return response.data;
   },
 };
@@ -112,12 +121,12 @@ export const attemptsAPI = {
 // Admin API
 export const adminAPI = {
   getStudents: async (): Promise<User[]> => {
-    const response = await api.get('/admin/students');
-    return response.data;
+    const response = await api.get<StudentsResponse>('/admin/students');
+    return response.data.students;
   },
 
   updateStudent: async (id: string, userData: Partial<User>): Promise<User> => {
-    const response = await api.put(`/admin/students/${id}`, userData);
+    const response = await api.put<SingleUserResponse>(`/admin/students/${id}`, userData);
     return response.data;
   },
 
@@ -125,8 +134,8 @@ export const adminAPI = {
     await api.delete(`/admin/students/${id}`);
   },
 
-  getAnalytics: async () => {
-    const response = await api.get('/admin/analytics');
+  getAnalytics: async (): Promise<AdminAnalytics> => {
+    const response = await api.get<AdminAnalytics>('/admin/analytics');
     return response.data;
   },
 };

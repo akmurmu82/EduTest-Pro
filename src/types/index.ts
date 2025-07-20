@@ -10,6 +10,21 @@ export interface User {
   createdAt: string;
 }
 
+// list of students
+export type StudentsResponse = { students: User[] };
+
+// single user
+export type SingleUserResponse = User;
+
+// analytics response: define what backend returns
+export interface AdminAnalytics {
+  totalUsers: number;
+  activeUsers: number;
+  testsCreated: number;
+  attemptsMade: number;
+  // add fields returned by your backend
+}
+
 export interface Question {
   id: string;
   subject: string;
@@ -25,6 +40,22 @@ export interface Question {
   createdAt: string;
 }
 
+export type QuestionsResponse = {
+  questions: Question[];
+  pagination: {
+    current: number;
+    pages: number;
+    total: number;
+  };
+};
+
+// single Question response (create/update)
+export type SingleQuestionResponse = Question;
+
+// generateQuestions returns array only
+export type GeneratedQuestionsResponse = Question[];
+
+
 export interface Test {
   id: string;
   title: string;
@@ -38,6 +69,9 @@ export interface Test {
   isActive: boolean;
   createdAt: string;
 }
+
+export type TestsResponse = { tests: Test[] };
+export type SingleTestResponse = Test;
 
 export interface TestAttempt {
   id: string;
@@ -54,12 +88,19 @@ export interface TestAttempt {
   isCompleted: boolean;
 }
 
+// Response types
+export type SingleAttemptResponse = TestAttempt;
+export type AttemptsResponse = TestAttempt[];
+
 export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
 }
+
+export type AuthResponse = { user: User; token: string };
+
 
 export interface TestState {
   tests: Test[];

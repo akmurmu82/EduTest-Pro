@@ -14,6 +14,7 @@ export const loginUser = createAsyncThunk(
 export const registerUser = createAsyncThunk(
   'auth/register',
   async (userData: Omit<User, 'id' | 'createdAt'>) => {
+    console.log("userdata:", userData)
     const response = await authAPI.register(userData);
     localStorage.setItem('token', response.token);
     return response.user;

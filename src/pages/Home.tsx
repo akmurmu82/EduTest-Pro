@@ -23,7 +23,7 @@ export const Home: React.FC = () => {
   };
 
   const stats = [
-    { icon: BookOpen, label: 'Available Tests', value: tests.length },
+    { icon: BookOpen, label: 'Available Tests', value: Array.isArray(tests) ? tests.length : 0 },
     { icon: Target, label: 'Subjects', value: user?.subjects.length || 0 },
     { icon: TrendingUp, label: 'Your Level', value: user?.class || 'N/A' },
   ];
@@ -75,7 +75,7 @@ export const Home: React.FC = () => {
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
               Available Tests
             </h2>
-            
+
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[1, 2, 3].map((i) => (
