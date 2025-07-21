@@ -132,7 +132,7 @@ router.post('/', auth, adminAuth, async (req, res) => {
     // Verify all questions exist
     const questions = await Question.find({ 
       _id: { $in: value.questions },
-      isActive: true 
+      // isActive: true 
     });
 
     if (questions.length !== value.questions.length) {
@@ -180,7 +180,7 @@ router.put('/:id', auth, adminAuth, async (req, res) => {
     if (value.questions) {
       const questions = await Question.find({ 
         _id: { $in: value.questions },
-        isActive: true 
+        // isActive: true 
       });
 
       if (questions.length !== value.questions.length) {

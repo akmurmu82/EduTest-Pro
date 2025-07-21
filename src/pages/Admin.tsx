@@ -470,7 +470,7 @@ export const Admin: React.FC = () => {
                               class: test.class,
                               difficulty: test.difficulty,
                               description: test.description,
-                              selectedQuestions: test.questions.map(q => q.id),
+                              selectedQuestions: test.questions.map(q => q._id || q.id),
                               timeLimit: test.timeLimit,
                             });
                             setShowTestForm(true);
@@ -958,20 +958,20 @@ export const Admin: React.FC = () => {
                     </label>
                     <div className="max-h-60 overflow-y-auto border border-gray-300 dark:border-gray-600 rounded-lg p-3 space-y-2">
                       {questions.map((question) => (
-                        <label key={question.id} className="flex items-start space-x-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded">
+                        <label key={question._id} className="flex items-start space-x-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded">
                           <input
                             type="checkbox"
-                            checked={testForm.selectedQuestions.includes(question.id)}
+                            checked={testForm.selectedQuestions.includes(question._id)}
                             onChange={(e) => {
                               if (e.target.checked) {
                                 setTestForm(prev => ({
                                   ...prev,
-                                  selectedQuestions: [...prev.selectedQuestions, question.id]
+                                  selectedQuestions: [...prev.selectedQuestions, question._id]
                                 }));
                               } else {
                                 setTestForm(prev => ({
                                   ...prev,
-                                  selectedQuestions: prev.selectedQuestions.filter(id => id !== question.id)
+                                  selectedQuestions: prev.selectedQuestions.filter(id => id !== question._id)
                                 }));
                               }
                             }}

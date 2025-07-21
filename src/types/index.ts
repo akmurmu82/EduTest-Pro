@@ -1,7 +1,8 @@
 // Core Types for Educational Testing Platform
 
 export interface User {
-  id: string;
+  id?: string;
+  _id: string;
   name: string;
   email: string;
   class: string;
@@ -26,7 +27,8 @@ export interface AdminAnalytics {
 }
 
 export interface Question {
-  id: string;
+  id?: string;
+  _id: string;
   subject: string;
   class: string;
   difficulty: 'easy' | 'medium' | 'hard';
@@ -60,13 +62,14 @@ export type GeneratedQuestionsResponse = {
 
 
 export interface Test {
-  id: string;
+  id?: string;
+  _id?: string;
   title: string;
   subject: string;
   class: string;
   difficulty: 'easy' | 'medium' | 'hard';
   description: string;
-  questions: Question[];
+  questions: Question[] | string[];
   timeLimit: number; // in minutes
   totalPoints: number;
   isActive: boolean;

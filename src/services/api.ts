@@ -50,12 +50,18 @@ export const testsAPI = {
   },
 
   createTest: async (testData: Omit<Test, 'id' | 'createdAt'>): Promise<Test> => {
-    const response = await api.post<SingleTestResponse>('/tests', testData);
+    const response = await api.post<SingleTestResponse>('/tests', {
+      ...testData,
+      questions: testData.questions.map(q => typeof q === 'string' ? q : q._id || q.id)
+    });
     return response.data;
   },
 
   updateTest: async (id: string, testData: Partial<Test>): Promise<Test> => {
-    const response = await api.put<SingleTestResponse>(`/tests/${id}`, testData);
+    const response = await api.put<SingleTestResponse>(`/tests/${id}`, {
+      ...testData,
+      questions: testData.questions ? testData.questions.map(q => typeof q === 'string' ? q : q._id || q.id) : undefined
+    });
     return response.data;
   },
 
