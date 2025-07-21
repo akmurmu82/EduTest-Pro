@@ -53,7 +53,10 @@ export type QuestionsResponse = {
 export type SingleQuestionResponse = Question;
 
 // generateQuestions returns array only
-export type GeneratedQuestionsResponse = Question[];
+export type GeneratedQuestionsResponse = {
+  message: string;
+  questions: Question[];
+};
 
 
 export interface Test {

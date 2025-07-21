@@ -83,6 +83,7 @@ export const Admin: React.FC = () => {
     setLoading(true);
     try {
       const generatedQuestions = await questionsAPI.generateQuestions(aiRequest);
+      console.log("generatedQuestions:", generatedQuestions)
       setQuestions(prev => [...prev, ...generatedQuestions]);
       setShowAIGenerator(false);
       toast.success(`Generated ${generatedQuestions.length} questions successfully!`);
@@ -103,8 +104,8 @@ export const Admin: React.FC = () => {
       };
 
       if (editingQuestion) {
-        const updated = await questionsAPI.updateQuestion(editingQuestion.id, questionData);
-        setQuestions(prev => prev.map(q => q.id === editingQuestion.id ? updated : q));
+        const updated = await questionsAPI.updateQuestion(editingQuestion._id, questionData);
+        setQuestions(prev => prev.map(q => q._id === editingQuestion._id ? updated : q));
         toast.success('Question updated successfully!');
       } else {
         const newQuestion = await questionsAPI.createQuestion(questionData);
@@ -253,7 +254,7 @@ export const Admin: React.FC = () => {
 
               <div className="grid gap-4">
                 {questions.map((question) => (
-                  <Card key={question.id} className="p-6">
+                  <Card key={question._id} className="p-6">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-2">
@@ -304,7 +305,7 @@ export const Admin: React.FC = () => {
                         <Button
                           variant="danger"
                           size="sm"
-                          onClick={() => handleDeleteQuestion(question.id)}
+                          onClick={() => handleDeleteQuestion(question._id)}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -320,7 +321,7 @@ export const Admin: React.FC = () => {
           {activeTab === 'students' && (
             <div className="grid gap-4">
               {students.map((student) => (
-                <Card key={student.id} className="p-6">
+                <Card key={student._id} className="p-6">
                   <div className="flex justify-between items-center">
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">

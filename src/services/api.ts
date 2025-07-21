@@ -94,7 +94,7 @@ export const questionsAPI = {
     request: QuestionGenerationRequest
   ): Promise<Question[]> => {
     const response = await api.post<GeneratedQuestionsResponse>('/questions/generate', request);
-    return response.data;
+    return response.data.questions;
   },
 };
 

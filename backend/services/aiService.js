@@ -7,12 +7,12 @@ const openai = new OpenAI({
 class AIService {
   async generateQuestions(request) {
     const { subject, class: grade, difficulty, type, count, topic } = request;
-    
+
     const prompt = this.buildPrompt(subject, grade, difficulty, type, count, topic);
-    
+
     try {
       const response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'system',
@@ -29,12 +29,12 @@ class AIService {
 
       const content = response.choices[0].message.content;
       const questions = JSON.parse(content);
-      
+
       // Process and validate questions
       return this.processGeneratedQuestions(questions, request);
     } catch (error) {
       console.error('AI generation error:', error);
-      
+
       // Fallback to sample questions if AI fails
       return this.generateFallbackQuestions(request);
     }
@@ -43,7 +43,7 @@ class AIService {
   buildPrompt(subject, grade, difficulty, type, count, topic) {
     const topicText = topic ? ` focusing on ${topic}` : '';
     const typeInstruction = type === 'mixed' ? 'mix of objective and subjective' : type;
-    
+
     return `Generate ${count} ${difficulty} difficulty ${typeInstruction} questions for ${subject} at ${grade} level${topicText}.
 
 Requirements:
@@ -80,7 +80,7 @@ Generate exactly ${count} questions. Ensure variety in question types and topics
       difficulty: request.difficulty,
       createdBy: 'ai',
       aiMetadata: {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o-mini',
         prompt: `Generated for ${request.subject} - ${request.class}`,
         generatedAt: new Date()
       }
@@ -89,12 +89,12 @@ Generate exactly ${count} questions. Ensure variety in question types and topics
 
   generateFallbackQuestions(request) {
     const { subject, class: grade, difficulty, type, count } = request;
-    
+
     const fallbackQuestions = [];
-    
+
     for (let i = 0; i < count; i++) {
       const questionType = type === 'mixed' ? (i % 2 === 0 ? 'objective' : 'subjective') : type;
-      
+
       const baseQuestion = {
         subject,
         class: grade,
@@ -126,7 +126,7 @@ Generate exactly ${count} questions. Ensure variety in question types and topics
         });
       }
     }
-    
+
     return fallbackQuestions;
   }
 
