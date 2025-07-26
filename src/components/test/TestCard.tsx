@@ -1,10 +1,10 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Clock, BookOpen, Target, Play } from 'lucide-react';
-import { Test } from '../../types';
-import { Button } from '../ui/Button';
-import { Badge } from '../ui/Badge';
-import { Card } from '../ui/Card';
+import React from "react";
+import { motion } from "framer-motion";
+import { Clock, BookOpen, Target, Play } from "lucide-react";
+import { Test } from "../../types";
+import { Button } from "../ui/Button";
+import { Badge } from "../ui/Badge";
+import { Card } from "../ui/Card";
 
 interface TestCardProps {
   test: Test;
@@ -14,10 +14,14 @@ interface TestCardProps {
 export const TestCard: React.FC<TestCardProps> = ({ test, onStartTest }) => {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'easy': return 'success';
-      case 'medium': return 'warning';
-      case 'hard': return 'danger';
-      default: return 'default';
+      case "easy":
+        return "success";
+      case "medium":
+        return "warning";
+      case "hard":
+        return "danger";
+      default:
+        return "default";
     }
   };
 
@@ -32,7 +36,8 @@ export const TestCard: React.FC<TestCardProps> = ({ test, onStartTest }) => {
             <div className="flex items-center space-x-2 mb-3">
               <Badge variant="info">{test.subject}</Badge>
               <Badge variant={getDifficultyColor(test.difficulty)}>
-                {test.difficulty.charAt(0).toUpperCase() + test.difficulty.slice(1)}
+                {test.difficulty.charAt(0).toUpperCase() +
+                  test.difficulty.slice(1)}
               </Badge>
             </div>
           </div>
@@ -59,7 +64,7 @@ export const TestCard: React.FC<TestCardProps> = ({ test, onStartTest }) => {
       </div>
 
       <Button
-        onClick={() => onStartTest(test.id)}
+        onClick={() => onStartTest(test._id)}
         className="w-full flex items-center justify-center space-x-2"
       >
         <Play className="h-4 w-4" />

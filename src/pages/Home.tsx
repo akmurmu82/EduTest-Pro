@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { BookOpen, Target, TrendingUp } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '../hooks/useTypedSelector';
-import { fetchTests, startTest } from '../store/slices/testSlice';
-import { TestCard } from '../components/test/TestCard';
-import { Card } from '../components/ui/Card';
+import React, { useEffect } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { BookOpen, Target, TrendingUp } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "../hooks/useTypedSelector";
+import { fetchTests, startTest } from "../store/slices/testSlice";
+import { TestCard } from "../components/test/TestCard";
+import { Card } from "../components/ui/Card";
 
 export const Home: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -23,9 +23,13 @@ export const Home: React.FC = () => {
   };
 
   const stats = [
-    { icon: BookOpen, label: 'Available Tests', value: Array.isArray(tests) ? tests.length : 0 },
-    { icon: Target, label: 'Subjects', value: user?.subjects.length || 0 },
-    { icon: TrendingUp, label: 'Your Level', value: user?.class || 'N/A' },
+    {
+      icon: BookOpen,
+      label: "Available Tests",
+      value: Array.isArray(tests) ? tests.length : 0,
+    },
+    { icon: Target, label: "Subjects", value: user?.subjects.length || 0 },
+    { icon: TrendingUp, label: "Your Level", value: user?.class || "N/A" },
   ];
 
   return (
@@ -42,7 +46,8 @@ export const Home: React.FC = () => {
               Welcome back, {user?.name}!
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Ready to test your knowledge? Choose from our collection of carefully crafted assessments.
+              Ready to test your knowledge? Choose from our collection of
+              carefully crafted assessments.
             </p>
           </div>
 
@@ -64,7 +69,9 @@ export const Home: React.FC = () => {
                   <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                     {stat.value}
                   </div>
-                  <div className="text-gray-600 dark:text-gray-400">{stat.label}</div>
+                  <div className="text-gray-600 dark:text-gray-400">
+                    {stat.label}
+                  </div>
                 </Card>
               </motion.div>
             ))}
@@ -95,7 +102,7 @@ export const Home: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {tests.map((test, index) => (
                   <motion.div
-                    key={test.id}
+                    key={test._id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
