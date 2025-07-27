@@ -20,6 +20,7 @@ const attemptSchema = Joi.object({
 // @desc    Submit test attempt
 // @access  Private
 router.post("/", auth, async (req, res) => {
+  console.log("req:", req.body);
   try {
     const { error, value } = attemptSchema.validate(req.body);
     if (error) {

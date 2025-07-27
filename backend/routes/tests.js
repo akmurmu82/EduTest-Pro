@@ -86,9 +86,9 @@ router.get("/", auth, async (req, res) => {
 // @route   GET /api/tests/:id
 // @desc    Get single test with questions
 // @access  Private
-router.get("/:id", auth, async (req, res) => {
+router.get("/:testId", auth, async (req, res) => {
   try {
-    const test = await Test.findById(req.params.id)
+    const test = await Test.findById(req.params.testId)
       .populate("questions")
       .populate("createdBy", "name");
 

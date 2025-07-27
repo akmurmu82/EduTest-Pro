@@ -15,6 +15,7 @@ export const Test: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { currentTest, currentAttempt } = useAppSelector((state) => state.test);
+  console.log("currentAttempt:", currentAttempt);
   const { user } = useAppSelector((state) => state.auth);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -96,16 +97,12 @@ export const Test: React.FC = () => {
       else if (percentage >= 60) category = "Intermediate";
 
       const finalAttempt = {
-        ...currentAttempt,
-        userId: user.id,
+        testId: testId,
         answers,
-        score,
-        percentage,
-        category,
-        tabSwitchCount,
         timeSpent: currentTest.timeLimit * 60 - (currentAttempt.timeSpent || 0),
-        isCompleted: true,
+        tabSwitchCount,
       };
+      console.log("finalAtt:", finalAttempt);
 
       await dispatch(submitTest(finalAttempt));
       navigate("/results");

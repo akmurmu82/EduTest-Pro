@@ -18,6 +18,7 @@ export const Home: React.FC = () => {
   }, [dispatch]);
 
   const handleStartTest = async (testId: string) => {
+    console.log(testId)
     await dispatch(startTest(testId));
     navigate(`/test/${testId}`);
   };

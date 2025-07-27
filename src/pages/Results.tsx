@@ -1,27 +1,26 @@
-
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Home, Check, X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '../hooks/useTypedSelector';
-import { clearCurrentTest } from '../store/slices/testSlice';
-import { ResultCard } from '../components/results/ResultCard';
-import { Button } from '../components/ui/Button';
-import { Card } from '../components/ui/Card';
-import { Badge } from '../components/ui/Badge';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Home, Check, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "../hooks/useTypedSelector";
+import { clearCurrentTest } from "../store/slices/testSlice";
+import { ResultCard } from "../components/results/ResultCard";
+import { Button } from "../components/ui/Button";
+import { Card } from "../components/ui/Card";
+import { Badge } from "../components/ui/Badge";
 
 export const Results: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { currentTest, currentAttempt } = useAppSelector((state) => state.test);
   const { user } = useAppSelector((state) => state.auth);
-  
+
   const [showAnswers, setShowAnswers] = useState(false);
   const [currentAnswerIndex, setCurrentAnswerIndex] = useState(0);
 
   const handleGoHome = () => {
     dispatch(clearCurrentTest());
-    navigate('/');
+    navigate("/");
   };
 
   if (!currentTest || !currentAttempt || !user) {
@@ -31,7 +30,7 @@ export const Results: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
             No results to display
           </h2>
-          <Button onClick={() => navigate('/')}>Go Home</Button>
+          <Button onClick={() => navigate("/")}>Go Home</Button>
         </Card>
       </div>
     );
@@ -40,7 +39,9 @@ export const Results: React.FC = () => {
   if (showAnswers) {
     const question = currentTest.questions[currentAnswerIndex];
     const userAnswer = currentAttempt.answers[question.id];
-    const isCorrect = userAnswer?.toLowerCase().trim() === question.correctAnswer.toLowerCase().trim();
+    const isCorrect =
+      userAnswer?.toLowerCase().trim() ===
+      question.correctAnswer.toLowerCase().trim();
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-purple-900">
@@ -60,7 +61,8 @@ export const Results: React.FC = () => {
                 <span>Back to Results</span>
               </Button>
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                Question {currentAnswerIndex + 1} of {currentTest.questions.length}
+                Question {currentAnswerIndex + 1} of{" "}
+                {currentTest.questions.length}
               </div>
             </div>
 
@@ -70,40 +72,53 @@ export const Results: React.FC = () => {
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex-1">
                     {question.question}
                   </h3>
-                  <Badge variant={isCorrect ? 'success' : 'danger'} className="ml-4">
+                  <Badge
+                    variant={isCorrect ? "success" : "danger"}
+                    className="ml-4"
+                  >
                     {isCorrect ? (
-                      <><Check className="h-3 w-3 mr-1" /> Correct</>
+                      <>
+                        <Check className="h-3 w-3 mr-1" /> Correct
+                      </>
                     ) : (
-                      <><X className="h-3 w-3 mr-1" /> Incorrect</>
+                      <>
+                        <X className="h-3 w-3 mr-1" /> Incorrect
+                      </>
                     )}
                   </Badge>
                 </div>
 
-                {question.type === 'objective' && question.options && (
+                {question.type === "objective" && question.options && (
                   <div className="space-y-3">
                     {question.options.map((option, index) => {
                       const isUserAnswer = userAnswer === option;
                       const isCorrectAnswer = option === question.correctAnswer;
-                      
+
                       return (
                         <div
                           key={index}
                           className={`p-3 rounded-lg border-2 ${
                             isCorrectAnswer
-                              ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                              ? "border-green-500 bg-green-50 dark:bg-green-900/20"
                               : isUserAnswer && !isCorrectAnswer
-                              ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                              : 'border-gray-200 dark:border-gray-600'
+                              ? "border-red-500 bg-red-50 dark:bg-red-900/20"
+                              : "border-gray-200 dark:border-gray-600"
                           }`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="text-gray-700 dark:text-gray-300">{option}</span>
+                            <span className="text-gray-700 dark:text-gray-300">
+                              {option}
+                            </span>
                             <div className="flex items-center space-x-2">
                               {isUserAnswer && (
-                                <Badge variant="info" size="sm">Your Answer</Badge>
+                                <Badge variant="info" size="sm">
+                                  Your Answer
+                                </Badge>
                               )}
                               {isCorrectAnswer && (
-                                <Badge variant="success" size="sm">Correct</Badge>
+                                <Badge variant="success" size="sm">
+                                  Correct
+                                </Badge>
                               )}
                             </div>
                           </div>
@@ -113,19 +128,21 @@ export const Results: React.FC = () => {
                   </div>
                 )}
 
-                {question.type === 'subjective' && (
+                {question.type === "subjective" && (
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Your Answer:
                       </label>
-                      <div className={`p-3 rounded-lg border-2 ${
-                        isCorrect
-                          ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                          : 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                      }`}>
+                      <div
+                        className={`p-3 rounded-lg border-2 ${
+                          isCorrect
+                            ? "border-green-500 bg-green-50 dark:bg-green-900/20"
+                            : "border-red-500 bg-red-50 dark:bg-red-900/20"
+                        }`}
+                      >
                         <p className="text-gray-700 dark:text-gray-300">
-                          {userAnswer || 'No answer provided'}
+                          {userAnswer || "No answer provided"}
                         </p>
                       </div>
                     </div>
@@ -158,7 +175,9 @@ export const Results: React.FC = () => {
             <div className="flex justify-between">
               <Button
                 variant="outline"
-                onClick={() => setCurrentAnswerIndex(prev => Math.max(0, prev - 1))}
+                onClick={() =>
+                  setCurrentAnswerIndex((prev) => Math.max(0, prev - 1))
+                }
                 disabled={currentAnswerIndex === 0}
                 className="flex items-center space-x-2"
               >
@@ -168,8 +187,14 @@ export const Results: React.FC = () => {
 
               <Button
                 variant="outline"
-                onClick={() => setCurrentAnswerIndex(prev => Math.min(currentTest.questions.length - 1, prev + 1))}
-                disabled={currentAnswerIndex === currentTest.questions.length - 1}
+                onClick={() =>
+                  setCurrentAnswerIndex((prev) =>
+                    Math.min(currentTest.questions.length - 1, prev + 1)
+                  )
+                }
+                disabled={
+                  currentAnswerIndex === currentTest.questions.length - 1
+                }
                 className="flex items-center space-x-2"
               >
                 <span>Next</span>
