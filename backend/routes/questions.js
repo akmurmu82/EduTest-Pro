@@ -4,13 +4,14 @@ const Question = require('../models/Question');
 const auth = require('../middleware/auth');
 const adminAuth = require('../middleware/adminAuth');
 const aiService = require('../services/aiService');
+const { gradeEnum } = require('../utils');
 
 const router = express.Router();
 
 // Validation schema
 const questionSchema = Joi.object({
   subject: Joi.string().required(),
-  class: Joi.string().valid('9th Grade', '10th Grade', '11th Grade', '12th Grade').required(),
+  class: Joi.string().valid(...gradeEnum).required(),
   difficulty: Joi.string().valid('easy', 'medium', 'hard').required(),
   type: Joi.string().valid('objective', 'subjective').required(),
   question: Joi.string().max(1000).required(),
@@ -28,7 +29,7 @@ const questionSchema = Joi.object({
 
 const generateSchema = Joi.object({
   subject: Joi.string().required(),
-  class: Joi.string().valid('9th Grade', '10th Grade', '11th Grade', '12th Grade').required(),
+  class: Joi.string().valid(...gradeEnum).required(),
   difficulty: Joi.string().valid('easy', 'medium', 'hard').required(),
   type: Joi.string().valid('objective', 'subjective', 'mixed').required(),
   count: Joi.number().min(1).max(20).required(),

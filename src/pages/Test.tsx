@@ -103,9 +103,19 @@ export const Test: React.FC = () => {
         tabSwitchCount,
       };
       console.log("finalAtt:", finalAttempt);
+      try {
+        let testRes = await dispatch(submitTest(finalAttempt)).unwrap();
+        console.log("testRes:", testRes);
+        navigate("/results");
+      } catch (error) {
+        console.log(error);
+        toast.error(`Failed to submit test.`, {
+          duration: 3000,
+        });
+        return;
+      }
 
-      await dispatch(submitTest(finalAttempt));
-      navigate("/results");
+
     },
     [
       currentTest,
@@ -256,10 +266,10 @@ export const Test: React.FC = () => {
                 key={index}
                 onClick={() => setCurrentQuestionIndex(index)}
                 className={`h-8 rounded text-xs font-medium transition-colors ${index === currentQuestionIndex
-                    ? "bg-blue-500 text-white"
-                    : answers[currentTest.questions[index].id]
-                      ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
-                      : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
+                  ? "bg-blue-500 text-white"
+                  : answers[currentTest.questions[index].id]
+                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
+                    : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
                   }`}
               >
                 {index + 1}

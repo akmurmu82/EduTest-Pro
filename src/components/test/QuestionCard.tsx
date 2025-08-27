@@ -37,7 +37,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
           <div
             className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${(questionNumber / totalQuestions) * 100}%` }}
+            style={{ width: `${(questionNumber/ totalQuestions) * 100}%` }}
           />
         </div>
 

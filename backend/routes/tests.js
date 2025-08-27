@@ -4,6 +4,7 @@ const Test = require("../models/Test");
 const Question = require("../models/Question");
 const auth = require("../middleware/auth");
 const adminAuth = require("../middleware/adminAuth");
+const { gradeEnum } = require("../utils");
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ const testSchema = Joi.object({
   title: Joi.string().max(100).required(),
   subject: Joi.string().required(),
   class: Joi.string()
-    .valid("9th Grade", "10th Grade", "11th Grade", "12th Grade")
+    .valid(...gradeEnum)
     .required(),
   difficulty: Joi.string().valid("easy", "medium", "hard").required(),
   description: Joi.string().max(500).required(),

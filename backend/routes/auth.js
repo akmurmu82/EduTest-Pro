@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
+const { gradeEnum } = require('../utils');
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ const registerSchema = Joi.object({
   name: Joi.string().min(2).max(50).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
-  class: Joi.string().valid('9th Grade', '10th Grade', '11th Grade', '12th Grade').required(),
+  class: Joi.string().valid(...gradeEnum).required(),
   subjects: Joi.array().items(Joi.string()).min(1).required(),
   role: Joi.string().valid('student', 'admin').default('student')
 });
@@ -148,7 +149,7 @@ router.put('/profile', auth, async (req, res) => {
   try {
     const updateSchema = Joi.object({
       name: Joi.string().min(2).max(50),
-      class: Joi.string().valid('9th Grade', '10th Grade', '11th Grade', '12th Grade'),
+      class: Joi.string().valid(...gradeEnum),
       subjects: Joi.array().items(Joi.string()).min(1)
     });
 

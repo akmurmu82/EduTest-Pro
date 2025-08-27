@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { gradeEnum } = require('../utils');
 
 const testSchema = new mongoose.Schema({
   title: {
@@ -15,7 +16,7 @@ const testSchema = new mongoose.Schema({
   class: {
     type: String,
     required: [true, 'Class is required'],
-    enum: ['9th Grade', '10th Grade', '11th Grade', '12th Grade']
+    enum: gradeEnum
   },
   difficulty: {
     type: String,
@@ -94,12 +95,12 @@ testSchema.index({ createdBy: 1 });
 testSchema.index({ 'schedule.startDate': 1, 'schedule.endDate': 1 });
 
 // Virtual for question count
-testSchema.virtual('questionCount').get(function() {
+testSchema.virtual('questionCount').get(function () {
   return this.questions.length;
 });
 
 // Calculate total points from questions
-testSchema.pre('save', async function(next) {
+testSchema.pre('save', async function (next) {
   if (this.isModified('questions')) {
     try {
       const Question = mongoose.model('Question');

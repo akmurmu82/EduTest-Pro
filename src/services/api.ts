@@ -153,6 +153,7 @@ export const attemptsAPI = {
       "/attempts",
       attemptData
     );
+    // console.log("response.data:", response.data)
     return response.data;
   },
 

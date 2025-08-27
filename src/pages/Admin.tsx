@@ -159,7 +159,7 @@ export const Admin: React.FC = () => {
 
     try {
       await questionsAPI.deleteQuestion(id);
-      setQuestions((prev) => prev.filter((q) => q.id !== id));
+      setQuestions((prev) => prev.filter((q) => q._id !== id));
       toast.success("Question deleted successfully!");
     } catch (error) {
       toast.error("Failed to delete question");
@@ -181,9 +181,10 @@ export const Admin: React.FC = () => {
         );
         toast.success("Test updated successfully!");
       } else {
-        const newTest = await testsAPI.createTest(testData);
-        setTests((prev) => [...prev, newTest]);
-        toast.success("Test created successfully!");
+        const createTestRes = await testsAPI.createTest(testData);
+        setTests((prev) => [...prev, createTestRes.test]);
+        console.log("createTestRes:", createTestRes)
+        toast.success(createTestRes.message || "Test created successfully!");
       }
 
       setShowTestForm(false);
@@ -683,8 +684,10 @@ export const Admin: React.FC = () => {
           {/* AI Generator Modal */}
           {showAIGenerator && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-              <Card className="w-full max-w-md p-6">
-                <div className="flex justify-between items-center mb-4">
+              <Card className="w-full max-w-md max-h-[90vh] flex flex-col">
+
+                {/* Header */}
+                <div className="flex justify-between items-center p-4 border-b">
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                     AI Question Generator
                   </h3>
@@ -697,40 +700,102 @@ export const Admin: React.FC = () => {
                   </Button>
                 </div>
 
-                <div className="space-y-4">
-                  <Input
-                    label="Subject"
-                    value={aiRequest.subject}
-                    onChange={(e) =>
-                      setAiRequest((prev) => ({
-                        ...prev,
-                        subject: e.target.value,
-                      }))
-                    }
-                    placeholder="e.g., Mathematics"
-                  />
-                  <Input
-                    label="Class"
-                    value={aiRequest.class}
-                    onChange={(e) =>
-                      setAiRequest((prev) => ({
-                        ...prev,
-                        class: e.target.value,
-                      }))
-                    }
-                    placeholder="e.g., 10th Grade"
-                  />
-                  <Input
-                    label="Topic (Optional)"
-                    value={aiRequest.topic}
-                    onChange={(e) =>
-                      setAiRequest((prev) => ({
-                        ...prev,
-                        topic: e.target.value,
-                      }))
-                    }
-                    placeholder="e.g., Algebra, Geometry"
-                  />
+                <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                  <div>
+                    <Input
+                      label="Subject"
+                      value={aiRequest.subject}
+                      onChange={(e) =>
+                        setAiRequest((prev) => ({
+                          ...prev,
+                          subject: e.target.value,
+                        }))
+                      }
+                      placeholder="e.g., Mathematics"
+                    />
+
+                    {/* Quick-select buttons */}
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {["Mathematics", "Science", "English", "History"].map((subj) => (
+                        <Button
+                          key={subj}
+                          size="xm"
+                          variant="secondary"
+                          className="rounded-full px-3 py-1 text-sm"
+                          onClick={() => setAiRequest((prev) => ({ ...prev, subject: subj }))}
+                        >
+                          {subj}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+
+                  <div>
+                    <Input
+                      label="Class"
+                      value={aiRequest.class}
+                      onChange={(e) =>
+                        setAiRequest((prev) => ({
+                          ...prev,
+                          class: e.target.value,
+                        }))
+                      }
+                      placeholder="e.g., 10th Grade"
+                    />
+
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {["8th", "9th", "10th", "11th", "12th"].map((cls) => (
+                        <Button
+                          key={cls}
+                          size="xs"
+                          variant="secondary"
+                          className="rounded-full px-3 py-1 text-sm"
+                          onClick={() =>
+                            setAiRequest((prev) => ({
+                              ...prev,
+                              class: cls,
+                            }))
+                          }
+                        >
+                          {cls}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <Input
+                      label="Topic (Optional)"
+                      value={aiRequest.topic}
+                      onChange={(e) =>
+                        setAiRequest((prev) => ({
+                          ...prev,
+                          topic: e.target.value,
+                        }))
+                      }
+                      placeholder="e.g., Algebra, Geometry"
+                    />
+
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {["Algebra", "Geometry", "Trigonometry", "Calculus"].map((topic) => (
+                        <Button
+                          key={topic}
+                          size="xs"
+                          variant="secondary"
+                          className="rounded-full px-3 py-1 text-sm" onClick={() =>
+                            setAiRequest((prev) => ({
+                              ...prev,
+                              topic,
+                            }))
+                          }
+                        >
+                          {topic}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Difficulty
@@ -784,7 +849,7 @@ export const Admin: React.FC = () => {
                   />
                 </div>
 
-                <div className="flex space-x-4 mt-6">
+                <div className="flex space-x-4 p-4 border-t">
                   <Button
                     onClick={handleGenerateQuestions}
                     loading={loading}
@@ -974,7 +1039,7 @@ export const Admin: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex space-x-4 mt-6">
+                <div className="flex-1 overflow-y-auto p-6 space-y-4">
                   <Button
                     onClick={handleSaveQuestion}
                     loading={loading}

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { gradeEnum } = require('../utils');
 
 const questionSchema = new mongoose.Schema({
   subject: {
@@ -8,8 +9,8 @@ const questionSchema = new mongoose.Schema({
   },
   class: {
     type: String,
-    required: [true, 'Class is required'],
-    enum: ['9th Grade', '10th Grade', '11th Grade', '12th Grade']
+    enum: gradeEnum,
+    required: [true, 'Class is required']
   },
   difficulty: {
     type: String,
@@ -77,7 +78,7 @@ questionSchema.index({ type: 1, isActive: 1 });
 questionSchema.index({ createdBy: 1 });
 
 // Validation for objective questions
-questionSchema.pre('save', function(next) {
+questionSchema.pre('save', function (next) {
   if (this.type === 'objective') {
     if (!this.options || this.options.length < 2) {
       return next(new Error('Objective questions must have at least 2 options'));
