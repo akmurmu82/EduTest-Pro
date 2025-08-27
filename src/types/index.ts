@@ -67,7 +67,7 @@ export interface Test {
   title: string;
   subject: string;
   class: string;
-  difficulty: 'easy' | 'medium' | 'hard';
+  difficulty: "easy" | "medium" | "hard";
   description: string;
   questions: Question[] | string[];
   timeLimit: number; // in minutes

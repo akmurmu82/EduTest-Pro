@@ -13,6 +13,7 @@ interface ResultCardProps {
 }
 
 export const ResultCard: React.FC<ResultCardProps> = ({ attempt, user, onViewAnswers }) => {
+  console.log("attempt:", attempt)
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'Expert': return 'success';

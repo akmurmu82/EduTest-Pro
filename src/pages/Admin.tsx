@@ -190,7 +190,8 @@ export const Admin: React.FC = () => {
       setEditingTest(null);
       resetTestForm();
     } catch (error) {
-      toast.error("Failed to save test");
+      toast.error("Failed to save test:");
+      console.log("Failed to save test:", error)
     } finally {
       setLoading(false);
     }
@@ -201,7 +202,7 @@ export const Admin: React.FC = () => {
 
     try {
       await testsAPI.deleteTest(id);
-      setTests((prev) => prev.filter((t) => t.id !== id));
+      setTests((prev) => prev.filter((t) => t._id !== id));
       toast.success("Test deleted successfully!");
     } catch (error) {
       toast.error("Failed to delete test");
@@ -377,8 +378,8 @@ export const Admin: React.FC = () => {
                               question.difficulty === "easy"
                                 ? "success"
                                 : question.difficulty === "medium"
-                                ? "warning"
-                                : "danger"
+                                  ? "warning"
+                                  : "danger"
                             }
                           >
                             {question.difficulty}
@@ -450,7 +451,7 @@ export const Admin: React.FC = () => {
 
               <div className="grid gap-4">
                 {tests.map((test) => (
-                  <Card key={test.id} className="p-6">
+                  <Card key={test._id} className="p-6">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-2">
@@ -461,8 +462,8 @@ export const Admin: React.FC = () => {
                               test.difficulty === "easy"
                                 ? "success"
                                 : test.difficulty === "medium"
-                                ? "warning"
-                                : "danger"
+                                  ? "warning"
+                                  : "danger"
                             }
                           >
                             {test.difficulty}
@@ -514,7 +515,7 @@ export const Admin: React.FC = () => {
                         <Button
                           variant="danger"
                           size="sm"
-                          onClick={() => handleDeleteTest(test.id)}
+                          onClick={() => handleDeleteTest(test._id)}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -1077,7 +1078,7 @@ export const Admin: React.FC = () => {
                       </select>
                     </div>
                     <Input
-                      label="Time Limit (minutes)"
+                      label="Time Limit (min 5 minutes)"
                       type="number"
                       value={testForm.timeLimit}
                       onChange={(e) =>

@@ -15,7 +15,7 @@ export const Test: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { currentTest, currentAttempt } = useAppSelector((state) => state.test);
-  console.log("currentAttempt:", currentAttempt);
+  console.log("currentTest:", currentTest, "currentAttempt:", currentAttempt);
   const { user } = useAppSelector((state) => state.auth);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -81,7 +81,7 @@ export const Test: React.FC = () => {
         if (
           userAnswer &&
           userAnswer.toLowerCase().trim() ===
-            question.correctAnswer.toLowerCase().trim()
+          question.correctAnswer.toLowerCase().trim()
         ) {
           score += question.points;
         }
@@ -255,13 +255,12 @@ export const Test: React.FC = () => {
               <button
                 key={index}
                 onClick={() => setCurrentQuestionIndex(index)}
-                className={`h-8 rounded text-xs font-medium transition-colors ${
-                  index === currentQuestionIndex
+                className={`h-8 rounded text-xs font-medium transition-colors ${index === currentQuestionIndex
                     ? "bg-blue-500 text-white"
                     : answers[currentTest.questions[index].id]
-                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
-                    : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
-                }`}
+                      ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
+                      : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
+                  }`}
               >
                 {index + 1}
               </button>

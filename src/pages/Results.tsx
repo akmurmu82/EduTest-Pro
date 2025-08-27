@@ -13,6 +13,7 @@ export const Results: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { currentTest, currentAttempt } = useAppSelector((state) => state.test);
+  console.log('currentAtt:', currentAttempt)
   const { user } = useAppSelector((state) => state.auth);
 
   const [showAnswers, setShowAnswers] = useState(false);
@@ -38,7 +39,7 @@ export const Results: React.FC = () => {
 
   if (showAnswers) {
     const question = currentTest.questions[currentAnswerIndex];
-    const userAnswer = currentAttempt.answers[question.id];
+    const userAnswer = currentAttempt.attempt.answers[question._id];
     const isCorrect =
       userAnswer?.toLowerCase().trim() ===
       question.correctAnswer.toLowerCase().trim();
@@ -216,7 +217,7 @@ export const Results: React.FC = () => {
           className="space-y-8"
         >
           <ResultCard
-            attempt={currentAttempt}
+            attempt={currentAttempt.attempt}
             user={user}
             onViewAnswers={() => setShowAnswers(true)}
           />

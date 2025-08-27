@@ -72,8 +72,8 @@ const testSchema = new mongoose.Schema({
     },
     maxAttempts: {
       type: Number,
-      default: 1,
-      min: 1
+      default: 3,
+      min: 3
     }
   },
   schedule: {
